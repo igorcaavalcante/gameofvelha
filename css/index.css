@@ -1,0 +1,23 @@
+body{
+	background: black;
+}
+
+#menu{
+	margin-left: 35%;
+	margin-right: 35%;
+	margin-top: 10%; 
+}
+
+.titulo{
+	color: white;
+	margin-bottom: 3rem;
+}
+
+.gameoption{
+	margin-bottom: 1rem;
+	padding: 2%;
+}
+
+a .hover{
+	text-decoration: none;
+}

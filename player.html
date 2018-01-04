@@ -1,0 +1,135 @@
+<!DOCTYPE html lang="pt">
+	<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>VÉIA</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+		<link rel="stylesheet" href="css/player.css">
+		<script src="https://use.fontawesome.com/264545ffad.js"></script>
+	</head>
+	<body onload="inicializar()">
+
+		<div id="main">
+			<h2 class="titulo text-center">GAME OF VÉIA</h2>
+
+			<table id="tabuleiro" align="center">
+				<tr>
+					<td id="t11" onclick="txo('t11')" value="0"></td>
+					<td id="t12" onclick="txo('t12')" value="0"></td>
+					<td id="t13" onclick="txo('t13')" value="0"></td>
+				</tr>
+				<tr>
+					<td id="t21" onclick="txo('t21')" value="0"></td>
+					<td id="t22" onclick="txo('t22')" value="0"></td>
+					<td id="t23" onclick="txo('t23')" value="0"></td>
+				</tr>
+				<tr>
+					<td id="t31" onclick="txo('t31')" value="0"></td>
+					<td id="t32" onclick="txo('t32')" value="0"></td>
+					<td id="t33" onclick="txo('t33')" value="0"></td>
+				</tr>
+			</table>
+
+			<h3 class="text-center" id="info">TIME OF: </h3>
+			<div class="text-center"><button onclick="restart()" type="button" class="btn btn-light"><i class="fa fa-refresh" aria-hidden="true"></i>  RESTART</button></div>
+
+			<div>
+			<table class="table table-bordered text-center placar" align="center">
+				<tr>
+					<td>X</td><td>O</td><td>VÉIA</td>
+				</tr>
+				<tr>
+					<td id="placarx"></td><td id="placaro"></td><td id="placarveia"></td>
+				</tr>
+			</table>
+			</div>
+		</div>
+
+		<script type="text/javascript">
+				
+			vezde = "X"
+			tabuleiro = [[0,0,0],[0,0,0],[0,0,0]]
+			quantjogadas = 0
+			alguemvenceu = false
+			placar = {"x": 0, "o": 0, "veia": 0}
+
+			function inicializar(){
+				atualizarvezde()
+				atualizarplacar()
+			}
+
+
+			function restart(){
+				//vezde = "X"
+				tabuleiro = [[0,0,0],[0,0,0],[0,0,0]]
+				quantjogadas = 0
+				alguemvenceu = false
+				for(i=1;i<4;i++){
+					for(j=1;j<4;j++){
+						document.getElementById("t"+i+j).innerHTML = ""
+					}
+				}
+				atualizarvezde()
+			}
+
+			function txo(box){
+				if(document.getElementById(box).innerHTML == 0){
+					if(!alguemvenceu){
+						document.getElementById(box).innerHTML = vezde
+						tabuleiro[box[1]-1][box[2]-1] = vezde
+						venceu = verificarvitoria()
+						if(venceu){
+							document.getElementById("info").innerHTML = vezde + " VENCEU!"
+							if(vezde=="X") placar["x"]++
+							else placar["o"]++
+							alguemvenceu = true
+							atualizarplacar()
+						}else{
+							if(++quantjogadas == 9){
+								document.getElementById("info").innerHTML = "GAVE VÉIA!!"
+								placar["veia"]++
+								atualizarplacar()
+							}
+							else{
+								vezde = (vezde=="X") ? "O" : "X"
+								atualizarvezde()
+							}
+						}
+					}
+				}
+			}
+
+			function atualizarplacar(){
+				document.getElementById("placarx").innerHTML = placar["x"]
+				document.getElementById("placarveia").innerHTML = placar["veia"]
+				document.getElementById("placaro").innerHTML = placar["o"]
+			}
+
+			function verificarvitoria(){
+				for(i=0;i<3;i++){
+					l = [tabuleiro[i][0], tabuleiro[i][1], tabuleiro[i][2]]
+					if((l[0] == vezde) && (l[1] == vezde) && (l[2] == vezde)) {return true}
+				}
+
+				for(i=0;i<3;i++){
+					l = [tabuleiro[0][i], tabuleiro[1][i], tabuleiro[2][i]]
+					if((l[0] == vezde) && (l[1] == vezde) && (l[2] == vezde)) {return true}
+				}
+
+				l = [tabuleiro[0][0], tabuleiro[1][1], tabuleiro[2][2]]
+				if((l[0] == vezde) && (l[1] == vezde) && (l[2] == vezde)) {return true}
+
+				l = [tabuleiro[0][2], tabuleiro[1][1], tabuleiro[2][0]]
+				if((l[0] == vezde) && (l[1] == vezde) && (l[2] == vezde)) {return true}
+
+				return false;
+			}
+
+			function atualizarvezde(){
+				document.getElementById("info").innerHTML = "TIME OF: " + vezde
+			}
+
+		</script>
+
+	</body>
+</html>
